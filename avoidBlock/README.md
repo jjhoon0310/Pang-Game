@@ -14,8 +14,8 @@
 <h2 align="center">Avoid Block Game</h2>
 
   <p align="center">
-    A game that trys to break the falling blocks
-	<br>While moving away from the blocks
+    Simple Game to show the basic functions needed 
+	<br>to make the Pang Game
     <br />
     <a href="https://github.com/jjhoon0310/Pang-Game"><strong>Explore the docs »</strong></a>
     <br />
@@ -58,7 +58,7 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+![Product Name Screen Shot][product-screenshot]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
