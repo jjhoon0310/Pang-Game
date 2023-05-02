@@ -1,7 +1,8 @@
-from module import *
 import time
 import os
 import pygame
+from threading import Timer
+
 pygame.init()
 
 # Set pygame background
@@ -231,6 +232,10 @@ def run(weapon_count, weapon_number):
             pass
         else:
             screen.blit(weapon_counter, (430, 10))
+
+        if weapon_count <= 0:
+            game_reslut = "Out of Bullet!"
+            running = False
 
         elapsed_time = (pygame.time.get_ticks() - start_ticks) / 1000
         timer = game_font.render("Time : {}".format(

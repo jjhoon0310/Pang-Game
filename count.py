@@ -13,3 +13,5 @@ def countdown(t, level):
 
     if level == 1:
         run(weapon_count=100, weapon_number=100)
+    elif level == 2:
+        run(weapon_count=30, weapon_number=30)
