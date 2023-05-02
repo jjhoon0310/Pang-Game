@@ -1,9 +1,9 @@
 import pygame
 from module import *
+from count import countdown
 
 pygame.init()
 
-title_font = pygame.font.SysFont("Arial", 35, bold=True, italic=False)
 title = title_font.render("Emotional Game", True, text_color)
 title_pos = screen_width/2, screen_height/2 - 130
 text_rect = title.get_rect(center=(title_pos))
@@ -44,7 +44,7 @@ def main():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button_easy_back.collidepoint(event.pos):
-                    run()
+                    countdown(3, level=1)
 
                 if button_mid_back.collidepoint(event.pos):
                     return

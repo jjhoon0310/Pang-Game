@@ -1,53 +1,25 @@
-from module import *
-import time
 import os
 import pygame
-pygame.init()
-
-# Set pygame background
-pygame.display.set_caption("Emotional Game")
-clock = pygame.time.Clock()
-
-screen_width = 640
-screen_height = 480
-screen = pygame.display.set_mode((screen_width, screen_height))
-bg_color = (255, 255, 255)
-screen.fill(bg_color)
-
-game_font = pygame.font.Font(None, 40)
-text_color = (0, 0, 0)
-title_font = pygame.font.SysFont("Arial", 35, bold=True, italic=False)
-
-# Accessing file
-current_path = os.path.dirname(__file__)
-image_path = os.path.join(current_path, "Image")
-
-# Setting Background
-background = pygame.image.load(os.path.join(image_path, "background.png"))
-
-stage = pygame.image.load(os.path.join(image_path, "stage.png"))
-stage_size = stage.get_rect().size
-stage_height = stage_size[1]
+from module import *
+pygame.init()  # Makes reset(Must)
 
 
-def run(weapon_count, weapon_number):
+def easy(weapon_count):
     # 1. Basic sets (Background, Charater(Location, Speed), Text)
-    charater = pygame.image.load(os.path.join(image_path, "charater.png"))
-    charater_size = charater.get_rect().size
-    charater_width = charater_size[0]
-    charater_height = charater_size[1]
+    # charater = pygame.image.load(os.path.join(image_path, "charater.png"))
+    # charater_size = charater.get_rect().size
+    # charater_width = charater_size[0]
+    # charater_height = charater_size[1]
     charater_x_pos = (screen_width / 2) - (charater_width / 2)
     charater_y_pos = screen_height - charater_height - stage_height
     charater_x = 0
     charater_speed = 5
 
-    weapon = pygame.image.load(os.path.join(image_path, "weapon.png"))
-    weapon_size = weapon.get_rect().size
-    weapon_width = weapon_size[0]
+    # weapon = pygame.image.load(os.path.join(image_path, "weapon.png"))
+    # weapon_size = weapon.get_rect().size
+    # weapon_width = weapon_size[0]
     weapons = []
     weapon_speed = 7
-    weapon_counter = game_font.render("Bullet left: {}".format(
-        int(weapon_count)), True, (255, 255, 255))
 
     balloon = [
         pygame.image.load(os.path.join(image_path, "balloon1.png")),
@@ -55,8 +27,6 @@ def run(weapon_count, weapon_number):
         pygame.image.load(os.path.join(image_path, "balloon3.png")),
         pygame.image.load(os.path.join(image_path, "balloon4.png"))
     ]
-
-    balloon_y_speed = [-20, -15, -12, -9]
 
     balloons = []
     balloons.append({
@@ -67,6 +37,8 @@ def run(weapon_count, weapon_number):
         "to_y": -6,
         "init_spd_y": balloon_y_speed[0]
     })
+
+    balloon_y_speed = [-20, -15, -12, -9]
 
     weapon_to_remove = -1
     balloon_to_remove = -1
@@ -95,11 +67,6 @@ def run(weapon_count, weapon_number):
                         (charater_width/2) - (weapon_width/2)
                     weapon_y_pos = charater_y_pos
                     weapons.append([weapon_x_pos, weapon_y_pos])
-
-                    weapon_count -= 1
-                    weapon_counter = game_font.render("Bullet left: {}".format(
-                        int(weapon_count)), True, (255, 255, 255))
-                    pygame.display.update()
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -227,10 +194,6 @@ def run(weapon_count, weapon_number):
 
         screen.blit(stage, (0, screen_height - stage_height))
         screen.blit(charater, (charater_x_pos, charater_y_pos))
-        if weapon_number == 100:
-            pass
-        else:
-            screen.blit(weapon_counter, (430, 10))
 
         elapsed_time = (pygame.time.get_ticks() - start_ticks) / 1000
         timer = game_font.render("Time : {}".format(
