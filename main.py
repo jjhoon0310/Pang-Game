@@ -50,7 +50,7 @@ def main():
                     countdown(3, level=2)
 
                 if button_hard_back.collidepoint(event.pos):
-                    return
+                    countdown(3, level=3)
 
 
 main()

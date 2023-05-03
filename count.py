@@ -15,3 +15,5 @@ def countdown(t, level):
         run(level=1)
     elif level == 2:
         run(level=2)
+    elif level == 3:
+        run(level=3)

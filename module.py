@@ -46,7 +46,7 @@ def run(level):
         weapon_count = 100
         weapon_number = 100
         shot_interval = 0
-    elif level == 2:
+    elif level == 2 or 3:
         weapon_count = 30
         weapon_number = 30
         shot_interval = 0.3
