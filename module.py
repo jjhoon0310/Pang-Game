@@ -66,7 +66,7 @@ def run(level):
         pygame.image.load(os.path.join(image_path, "balloon4.png"))
     ]
 
-    balloon_y_speed = [-20, -15, -12, -9]
+    balloon_y_speed = [-20, -15, -12, -12]
 
     balloons = []
     balloons.append({
@@ -180,6 +180,7 @@ def run(level):
                     weapon_to_remove = weapon_idx
                     balloon_to_remove = balloon_idx
 
+                    # If it is not the smallest ball
                     if balloon_img_idx < 3:
                         # Current balloon size
                         balloon_width = balloon_rect.size[0]
@@ -205,6 +206,15 @@ def run(level):
                             "to_x": 3,
                             "to_y": -6,
                             "init_spd_y": balloon_y_speed[balloon_img_idx + 1]})
+
+                        if level == 3 and balloon_img_idx == 1:
+                            balloons.append({
+                                "pos_x": balloon_x_pos + (balloon_width/2) - (small_balloon_width/2),
+                                "pos_y": balloon_y_pos + (balloon_height/2) - (small_balloon_height/2),
+                                "img_idx": balloon_img_idx + 1,
+                                "to_x": -4,
+                                "to_y": -7,
+                                "init_spd_y": balloon_y_speed[balloon_img_idx + 1]})
 
                     break
             else:
