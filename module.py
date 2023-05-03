@@ -5,10 +5,11 @@ from threading import Timer
 
 pygame.init()
 
-# Set pygame background
+# Set screen title
 pygame.display.set_caption("Emotional Game")
 clock = pygame.time.Clock()
 
+# Set screen size
 screen_width = 640
 screen_height = 480
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -32,7 +33,7 @@ stage_height = stage_size[1]
 
 
 def run(level):
-    # 1. Basic sets (Background, Charater(Location, Speed), Text)
+    # Seting Character
     charater = pygame.image.load(os.path.join(image_path, "charater.png"))
     charater_size = charater.get_rect().size
     charater_width = charater_size[0]
@@ -42,6 +43,7 @@ def run(level):
     charater_x = 0
     charater_speed = 5
 
+    # Setting weapon numbers based on level
     if level == 1:
         weapon_count = 100
         weapon_number = 100
@@ -51,14 +53,16 @@ def run(level):
         weapon_number = 30
         shot_interval = 0.3
 
+    # Setting Weapon
     weapon = pygame.image.load(os.path.join(image_path, "weapon.png"))
     weapon_size = weapon.get_rect().size
     weapon_width = weapon_size[0]
-    weapons = []
+    weapons = []  # Array of weapons to shoot multiple
     weapon_speed = 7
     weapon_counter = game_font.render("Bullet left: {}".format(
         int(weapon_count)), True, (255, 255, 255))
 
+    # Setting balls in four different sizes
     balloon = [
         pygame.image.load(os.path.join(image_path, "balloon1.png")),
         pygame.image.load(os.path.join(image_path, "balloon2.png")),
@@ -69,15 +73,18 @@ def run(level):
     balloon_y_speed = [-20, -15, -12, -12]
 
     balloons = []
+
+    # The first balloon
     balloons.append({
-        "pos_x": 50,
-        "pos_y": 50,
-        "img_idx": 0,
-        "to_x": 3,
-        "to_y": -6,
-        "init_spd_y": balloon_y_speed[0]
+        "pos_x": 50,  # X location
+        "pos_y": 50,  # Y location
+        "img_idx": 0,  # Which ball (index)
+        "to_x": 3,  # X direction
+        "to_y": -6,  # Y direction
+        "init_spd_y": balloon_y_speed[0]  # Y initial speed
     })
 
+    # Saving weapon & balloon numbers
     weapon_to_remove = -1
     balloon_to_remove = -1
 
@@ -86,7 +93,6 @@ def run(level):
     start_ticks = pygame.time.get_ticks()
     game_reslut = "Game Over"
 
-    # 2. Event lope
     running = True
     while running:
         dt = clock.tick(40)
@@ -94,7 +100,7 @@ def run(level):
             if event.type == pygame.QUIT:
                 running = False
 
-            # 2-1. Control : keyboard or mouse
+            # Control character
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     charater_x -= charater_speed
@@ -116,7 +122,7 @@ def run(level):
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     charater_x = 0
 
-        # 3. Charater location
+        # Charater location
         charater_x_pos += charater_x
 
         if charater_x_pos < 0:
@@ -124,11 +130,15 @@ def run(level):
         elif charater_x_pos > screen_width - charater_width:
             charater_x_pos = screen_width - charater_width
 
-        # 3-1 Weapon location
+        # Weapon location
+        # 100, 200 -> 180, 160, 140, ...
+        # 500, 200 -> 180, 160, 140, ...
         weapons = [[w[0], w[1] - weapon_speed] for w in weapons]
+
+        # Remove when it touches the roof
         weapons = [[w[0], w[1]]for w in weapons if w[1] > 0]
 
-        # 3-2 Enemy locaton
+        # Balloon locaton
         for balloon_idx, balloon_val in enumerate(balloons):
             balloon_x_pos = balloon_val["pos_x"]
             balloon_y_pos = balloon_val["pos_y"]
@@ -138,18 +148,20 @@ def run(level):
             balloon_width = balloon_size[0]
             balloon_height = balloon_size[1]
 
+            # Bounce off when it touches the wall
             if balloon_x_pos < 0 or balloon_x_pos > screen_width - balloon_width:
                 balloon_val["to_x"] = balloon_val["to_x"] * -1
 
+            # Bounce upwards when it touches the floor
             if balloon_y_pos >= screen_height - stage_height - balloon_height:
                 balloon_val["to_y"] = balloon_val["init_spd_y"]
-            else:
+            else:  # Or the ball accelerates
                 balloon_val["to_y"] += 0.5
 
             balloon_val["pos_x"] += balloon_val["to_x"]
             balloon_val["pos_y"] += balloon_val["to_y"]
 
-        # 4. Crash with enemy
+        # Crash with enemy
         charater_rect = charater.get_rect()
         charater_rect.left = charater_x_pos
         charater_rect.top = charater_y_pos
@@ -159,15 +171,17 @@ def run(level):
             balloon_y_pos = balloon_val["pos_y"]
             balloon_img_idx = balloon_val["img_idx"]
 
+            # Rect of the balloon
             balloon_rect = balloon[balloon_img_idx].get_rect()
             balloon_rect.left = balloon_x_pos
             balloon_rect.top = balloon_y_pos
 
+            # Crash character and balloon
             if charater_rect.colliderect(balloon_rect):
                 running = False
                 break
 
-            # 4-1 Chrash with enemy and weapon
+            # Chrash with enemy and weapon
             for weapon_idx, weapon_val in enumerate(weapons):
                 weapon_x_pos = weapon_val[0]
                 weapon_y_pos = weapon_val[1]
@@ -176,6 +190,7 @@ def run(level):
                 weapon_rect.left = weapon_x_pos
                 weapon_rect.top = weapon_y_pos
 
+                # Crash weapon and balloon
                 if weapon_rect.colliderect(balloon_rect):
                     weapon_to_remove = weapon_idx
                     balloon_to_remove = balloon_idx
@@ -191,6 +206,7 @@ def run(level):
                         small_balloon_width = small_balloon_rect.size[0]
                         small_balloon_height = small_balloon_rect.size[1]
 
+                        # Divided balloon going left
                         balloons.append({
                             "pos_x": balloon_x_pos + (balloon_width / 2) - (small_balloon_width / 2),
                             "pos_y": balloon_y_pos + (balloon_height / 2) - (small_balloon_height / 2),
@@ -199,6 +215,7 @@ def run(level):
                             "to_y": -6,
                             "init_spd_y": balloon_y_speed[balloon_img_idx + 1]})
 
+                        # Divided balloon going right
                         balloons.append({
                             "pos_x": balloon_x_pos + (balloon_width/2) - (small_balloon_width/2),
                             "pos_y": balloon_y_pos + (balloon_height/2) - (small_balloon_height/2),
@@ -207,6 +224,7 @@ def run(level):
                             "to_y": -6,
                             "init_spd_y": balloon_y_speed[balloon_img_idx + 1]})
 
+                        # Another balloon if the level is hard
                         if level == 3 and balloon_img_idx == 1:
                             balloons.append({
                                 "pos_x": balloon_x_pos + (balloon_width/2) - (small_balloon_width/2),
@@ -221,6 +239,7 @@ def run(level):
                 continue
             break
 
+        # Delete crashed weapon and balloon
         if balloon_to_remove > -1:
             del balloons[balloon_to_remove]
             balloon_to_remove = -1
@@ -233,7 +252,7 @@ def run(level):
             game_reslut = "Game Completed!"
             running = False
 
-        # 5. Make it visible
+        # Make it visible
         screen.blit(background, (0, 0))
 
         for weapon_x_pos, weapon_y_pos in weapons:
