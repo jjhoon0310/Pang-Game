@@ -31,7 +31,7 @@ stage_size = stage.get_rect().size
 stage_height = stage_size[1]
 
 
-def run(weapon_count, weapon_number):
+def run(level):
     # 1. Basic sets (Background, Charater(Location, Speed), Text)
     charater = pygame.image.load(os.path.join(image_path, "charater.png"))
     charater_size = charater.get_rect().size
@@ -41,6 +41,15 @@ def run(weapon_count, weapon_number):
     charater_y_pos = screen_height - charater_height - stage_height
     charater_x = 0
     charater_speed = 5
+
+    if level == 1:
+        weapon_count = 100
+        weapon_number = 100
+        shot_interval = 0
+    elif level == 2:
+        weapon_count = 30
+        weapon_number = 30
+        shot_interval = 0.3
 
     weapon = pygame.image.load(os.path.join(image_path, "weapon.png"))
     weapon_size = weapon.get_rect().size
@@ -73,6 +82,7 @@ def run(weapon_count, weapon_number):
     balloon_to_remove = -1
 
     total_time = 100
+    last_shot_time = 0
     start_ticks = pygame.time.get_ticks()
     game_reslut = "Game Over"
 
@@ -80,7 +90,6 @@ def run(weapon_count, weapon_number):
     running = True
     while running:
         dt = clock.tick(40)
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -91,11 +100,12 @@ def run(weapon_count, weapon_number):
                     charater_x -= charater_speed
                 elif event.key == pygame.K_RIGHT:
                     charater_x += charater_speed
-                elif event.key == pygame.K_SPACE:
+                elif event.key == pygame.K_SPACE and time.time() - last_shot_time > shot_interval:
                     weapon_x_pos = charater_x_pos + \
                         (charater_width/2) - (weapon_width/2)
                     weapon_y_pos = charater_y_pos
                     weapons.append([weapon_x_pos, weapon_y_pos])
+                    last_shot_time = time.time()
 
                     weapon_count -= 1
                     weapon_counter = game_font.render("Bullet left: {}".format(
