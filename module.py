@@ -1,9 +1,11 @@
 import time
 import os
 import pygame
+from pygame import mixer
 import random
 
 pygame.init()
+mixer.init()
 
 # Set screen title
 pygame.display.set_caption("Emotional Game")
@@ -118,9 +120,13 @@ def run(level):
                         int(weapon_count)), True, (255, 255, 255))
 
                     # Random number to quit game
-                    rand_num = random.randint(0, 9)
+                    rand_num = random.randint(6, 9)
                     if level == 4 and rand_num == 7:
+                        mixer.music.load("Pang-Game/emotional.mp3")
+                        mixer.music.set_volume(0.7)
+                        mixer.music.play()
                         game_reslut = "Emotional Damage!"
+                        pygame.time.delay(1500)
                         running = False
                         break
 
