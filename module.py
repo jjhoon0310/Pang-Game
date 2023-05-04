@@ -1,6 +1,7 @@
 import time
 import os
 import pygame
+import random
 
 pygame.init()
 
@@ -70,7 +71,6 @@ def run(level):
     ]
 
     balloon_y_speed = [-20, -15, -12, -12]
-
     balloons = []
 
     # The first balloon
@@ -112,9 +112,18 @@ def run(level):
                     weapons.append([weapon_x_pos, weapon_y_pos])
                     last_shot_time = time.time()
 
+                    # Counting weapon numbers
                     weapon_count -= 1
                     weapon_counter = game_font.render("Bullet left: {}".format(
                         int(weapon_count)), True, (255, 255, 255))
+
+                    # Random number to quit game
+                    rand_num = random.randint(0, 9)
+                    if level == 4 and rand_num == 7:
+                        game_reslut = "Emotional Damage!"
+                        running = False
+                        break
+
                     pygame.display.update()
 
             if event.type == pygame.KEYUP:
