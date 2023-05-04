@@ -1,7 +1,6 @@
 import time
 import os
 import pygame
-from threading import Timer
 
 pygame.init()
 
