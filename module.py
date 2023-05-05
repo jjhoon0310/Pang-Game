@@ -248,6 +248,23 @@ def run(level):
                                 "to_y": -7,
                                 "init_spd_y": balloon_y_speed[balloon_img_idx + 1]})
 
+                        if level == 4 and balloon_img_idx == 1:
+                            for i in range(2):
+                                balloons.append({
+                                    "pos_x": balloon_x_pos + (balloon_width/2) - (small_balloon_width/2),
+                                    "pos_y": balloon_y_pos + (balloon_height/2) - (small_balloon_height/2),
+                                    "img_idx": balloon_img_idx + 1,
+                                    "to_x": -4 - i,
+                                    "to_y": -7 - i,
+                                    "init_spd_y": balloon_y_speed[balloon_img_idx + 1]})
+                                balloons.append({
+                                    "pos_x": balloon_x_pos + (balloon_width/2) - (small_balloon_width/2),
+                                    "pos_y": balloon_y_pos + (balloon_height/2) - (small_balloon_height/2),
+                                    "img_idx": balloon_img_idx + 1,
+                                    "to_x": 4 + i,
+                                    "to_y": -7 - i,
+                                    "init_spd_y": balloon_y_speed[balloon_img_idx + 1]})
+
                     break
             else:
                 continue
