@@ -60,7 +60,7 @@ def main():
                     countdown(3, level=3)
 
                 if button_asian_back.collidepoint(event.pos):
-                    countdown(4, level=4)
+                    countdown(3, level=4)
 
 
 main()

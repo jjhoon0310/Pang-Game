@@ -103,10 +103,16 @@ def run(level):
 
             # Control character
             if event.type == pygame.KEYDOWN:
+                rand_num = random.randint(0, 9)
                 if event.key == pygame.K_LEFT:
                     charater_x -= charater_speed
                 elif event.key == pygame.K_RIGHT:
                     charater_x += charater_speed
+                    if level == 4 and rand_num == 5:
+                        game_reslut = "Character Too Tired!"
+                        running = False
+                        break
+
                 elif event.key == pygame.K_SPACE and time.time() - last_shot_time > shot_interval:
                     weapon_x_pos = charater_x_pos + \
                         (charater_width/2) - (weapon_width/2)
@@ -120,7 +126,6 @@ def run(level):
                         int(weapon_count)), True, (255, 255, 255))
 
                     # Random number to quit game
-                    rand_num = random.randint(6, 9)
                     if level == 4 and rand_num == 7:
                         mixer.music.load("Pang-Game/emotional.mp3")
                         mixer.music.set_volume(0.7)
@@ -192,6 +197,12 @@ def run(level):
 
             # Crash character and balloon
             if charater_rect.colliderect(balloon_rect):
+                running = False
+                break
+
+            # Crash character and screen
+            if level == 4 and charater_x_pos <= 0 or charater_x_pos + charater_width >= screen_width:
+                game_reslut = "The wall is dangerous!"
                 running = False
                 break
 
