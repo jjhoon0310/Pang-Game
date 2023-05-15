@@ -202,7 +202,7 @@ def run(level):
 
             # Crash character and screen
             if level == 4 and charater_x_pos <= 0 or charater_x_pos + charater_width >= screen_width:
-                game_reslut = "The wall is dangerous!"
+                game_reslut = "The Wall is Dangerous!"
                 running = False
                 break
 
